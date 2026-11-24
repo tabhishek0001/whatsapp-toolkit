@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Free browser-based WhatsApp link and marketing toolkit for click-to-chat links, message templates, UTM links and QR codes.">
+<meta name="theme-color" content="#128c7e">
+<title>WhatsApp Toolkit — Link & Marketing Tools</title>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="./"><span class="brand-mark">W</span><span>WhatsApp Toolkit</span></a>
+  <nav><a href="#tools">Tools</a><a href="#about">About</a></nav>
+</header>
+
+<main>
+<section class="hero">
+  <div class="eyebrow">FREE · BROWSER-BASED · NO LOGIN</div>
+  <h1>Build better WhatsApp links and campaigns.</h1>
+  <p>Create click-to-chat links, ready-to-send messages, campaign URLs and QR codes without uploading your data.</p>
+  <div class="hero-actions"><a class="btn primary" href="#tools">Start building</a><button class="btn ghost" id="sharePage" type="button">Share toolkit</button></div>
+</section>
+
+<section id="tools" class="tools">
+  <article class="tool-card featured">
+    <div class="tool-head"><span class="tool-icon">↗</span><div><h2>Click-to-Chat Link</h2><p>Generate a WhatsApp link with a pre-filled message.</p></div></div>
+    <div class="grid two">
+      <label>Phone number <input id="phone" inputmode="tel" autocomplete="tel" placeholder="919876543210"><small>Include country code. Do not use +, spaces or dashes.</small></label>
+      <label>Message <textarea id="message" rows="4" placeholder="Hello! I would like to know more about your product."></textarea></label>
+    </div>
+    <div class="result-row"><input id="waLink" readonly placeholder="Your WhatsApp link will appear here"><button class="btn primary" id="copyLink" type="button">Copy link</button></div>
+    <div class="actions"><a id="openChat" class="btn secondary disabled" href="#" target="_blank" rel="noopener">Open WhatsApp</a><button class="btn ghost" id="downloadLink" type="button">Download .txt</button></div>
+  </article>
+
+  <article class="tool-card">
+    <div class="tool-head"><span class="tool-icon">✎</span><div><h2>Message Builder</h2><p>Build a polished message from reusable fields.</p></div></div>
+    <div class="grid two">
+      <label>Greeting <input id="greeting" value="Hello"></label>
+      <label>Name <input id="customer" placeholder="Customer name"></label>
+      <label>Business / brand <input id="businessName" placeholder="Your business"></label>
+      <label>Offer / purpose <input id="offer" placeholder="your latest offer"></label>
+    </div>
+    <label>Template
+      <select id="template">
+        <option value="sales">Sales enquiry</option><option value="support">Customer support</option><option value="followup">Follow-up</option><option value="custom">Custom</option>
+      </select>
+    </label>
+    <label>Message <textarea id="builderMessage" rows="6"></textarea></label>
+    <div class="actions"><button class="btn primary" id="copyMessage" type="button">Copy message</button><button class="btn ghost" id="useMessage" type="button">Use in link builder</button></div>
+  </article>
+
+  <article class="tool-card">
+    <div class="tool-head"><span class="tool-icon">#</span><div><h2>Campaign Link Builder</h2><p>Add UTM tracking to a WhatsApp destination or landing page.</p></div></div>
+    <label>Destination URL <input id="campaignUrl" type="url" placeholder="https://example.com/offer"></label>
+    <div class="grid three">
+      <label>Source <input id="utmSource" value="whatsapp"></label>
+      <label>Medium <input id="utmMedium" value="chat"></label>
+      <label>Campaign <input id="utmCampaign" placeholder="summer-sale"></label>
+    </div>
+    <div class="result-row"><input id="campaignResult" readonly placeholder="Tracked URL"></div>
+    <div class="actions"><button class="btn primary" id="copyCampaign" type="button">Copy URL</button><button class="btn ghost" id="clearCampaign" type="button">Clear</button></div>
+  </article>
+
+  <article class="tool-card">
+    <div class="tool-head"><span class="tool-icon">▦</span><div><h2>QR Code Generator</h2><p>Generate a shareable QR code for any WhatsApp link or URL.</p></div></div>
+    <label>Content <input id="qrInput" placeholder="Paste a WhatsApp link or URL"></label>
+    <div class="qr-area"><div id="qrCode" class="qr-placeholder">Enter content to generate QR</div></div>
+    <div class="actions"><button class="btn primary" id="downloadQr" type="button" disabled>Download PNG</button><button class="btn ghost" id="copyQrSource" type="button">Copy content</button></div>
+  </article>
+
+  <article class="tool-card">
+    <div class="tool-head"><span class="tool-icon">✓</span><div><h2>Link Checker</h2><p>Validate and inspect a WhatsApp click-to-chat link.</p></div></div>
+    <div class="result-row"><input id="checkInput" placeholder="https://wa.me/919876543210?text=Hello"><button class="btn primary" id="checkLink" type="button">Check</button></div>
+    <div id="checkResult" class="status neutral">Paste a wa.me or WhatsApp click-to-chat link.</div>
+  </article>
+</section>
+
+<section id="about" class="info">
+  <h2>Privacy-first by design</h2>
+  <p>Phone numbers, messages and campaign values are processed in your browser. Nothing in this toolkit is uploaded to a server.</p>
+  <div class="notes"><span>✓ No account required</span><span>✓ No phone-number storage</span><span>✓ Static and GitHub Pages friendly</span><span>✓ Uses official wa.me link format</span></div>
+</section>
+</main>
+
+<footer><span>© 2026 WhatsApp Toolkit</span><span>Browser-only utility</span></footer>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script src="assets/js/app.js" defer></script>
+</body>
+</html>

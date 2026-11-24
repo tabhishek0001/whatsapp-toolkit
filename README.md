@@ -17,5 +17,5 @@ Inputs are processed locally in the browser. No account or backend is required.
 ## Deploy
 The project is static and can be hosted directly on GitHub Pages.
 
-## Important
-The current QR generator is an MVP visual encoder and is **not standards-compliant**. It must be replaced with a standards-compliant QR implementation before production use.
+## QR generation
+QR codes are generated in the browser using QRCode.js. The toolkit does not send the encoded content to a backend.

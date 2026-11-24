@@ -18,8 +18,27 @@ function campaign(){const base=esc($('#campaignUrl').value);if(!base){$('#campai
 ['campaignUrl','utmSource','utmMedium','utmCampaign'].forEach(id=>$('#'+id).addEventListener('input',campaign));
 $('#copyCampaign').onclick=()=>copy($('#campaignResult').value,'Campaign URL');$('#clearCampaign').onclick=()=>{['campaignUrl','utmCampaign','campaignResult'].forEach(id=>$('#'+id).value='');campaign()};
 let qrCanvas=null;
-function qr(){const v=esc($('#qrInput').value);const box=$('#qrCode');box.innerHTML='';if(!v){box.className='qr-placeholder';box.textContent='Enter content to generate QR';$('#downloadQr').disabled=true;return}const c=document.createElement('canvas');const ctx=c.getContext('2d');const n=33,scale=7;c.width=c.height=n*scale;ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height);let seed=0;for(let i=0;i<v.length;i++)seed=(seed*31+v.charCodeAt(i))>>>0;const rand=()=>{seed=(1664525*seed+1013904223)>>>0;return seed/4294967296};const m=Array.from({length:n},()=>Array(n).fill(false));for(let y=0;y<n;y++)for(let x=0;x<n;x++)m[y][x]=rand()>.5;function finder(x0,y0){for(let y=0;y<7;y++)for(let x=0;x<7;x++)m[y0+y][x0+x]=(x===0||x===6||y===0||y===6||(x>=2&&x<=4&&y>=2&&y<=4))}finder(0,0);finder(n-7,0);finder(0,n-7);ctx.fillStyle='#111';for(let y=0;y<n;y++)for(let x=0;x<n;x++)if(m[y][x])ctx.fillRect(x*scale,y*scale,scale,scale);box.appendChild(c);box.className='';qrCanvas=c;$('#downloadQr').disabled=false}
-$('#qrInput').addEventListener('input',qr);$('#downloadQr').onclick=()=>{if(!qrCanvas)return;const a=document.createElement('a');a.href=qrCanvas.toDataURL('image/png');a.download='whatsapp-qr.png';a.click()};$('#copyQrSource').onclick=()=>copy($('#qrInput').value,'Content');
+function qr(){
+  const v=esc($('#qrInput').value);
+  const box=$('#qrCode');
+  box.innerHTML='';
+  qrCanvas=null;
+  if(!v){box.className='qr-placeholder';box.textContent='Enter content to generate QR';$('#downloadQr').disabled=true;return}
+  if(typeof QRCode==='undefined'){box.className='qr-placeholder';box.textContent='QR library could not be loaded.';$('#downloadQr').disabled=true;return}
+  new QRCode(box,{text:v,width:220,height:220,colorDark:'#111111',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
+  const img=box.querySelector('img'), canvas=box.querySelector('canvas');
+  if(canvas)qrCanvas=canvas;
+  else if(img){
+    const c=document.createElement('canvas'),ctx=c.getContext('2d');
+    c.width=220;c.height=220;const draw=()=>{ctx.fillStyle='#fff';ctx.fillRect(0,0,220,220);ctx.drawImage(img,0,0,220,220);qrCanvas=c};
+    if(img.complete)draw();else img.onload=draw;
+  }
+  box.className='';
+  $('#downloadQr').disabled=false;
+}
+$('#qrInput').addEventListener('input',qr);
+$('#downloadQr').onclick=()=>{if(!qrCanvas)return;const a=document.createElement('a');a.href=qrCanvas.toDataURL('image/png');a.download='whatsapp-qr.png';a.click()};
+$('#copyQrSource').onclick=()=>copy($('#qrInput').value,'Content');
 $('#checkLink').onclick=()=>{const v=esc($('#checkInput').value);const e=$('#checkResult');try{const u=new URL(v);const ok=(u.hostname==='wa.me'||u.hostname==='api.whatsapp.com'||u.hostname.endsWith('.whatsapp.com'));e.className='status '+(ok?'good':'bad');e.textContent=ok?'Valid WhatsApp-compatible URL. Phone/message parameters can be inspected in the address.':'This does not look like a WhatsApp URL.'}catch{e.className='status bad';e.textContent='Invalid URL.'}};
 $('#sharePage').onclick=async()=>{const data={title:'WhatsApp Toolkit',text:'Build WhatsApp links and marketing URLs with this free browser-based toolkit.',url:location.href};if(navigator.share){try{await navigator.share(data)}catch{}}else copy(location.href,'Toolkit URL')};
 refreshWa();

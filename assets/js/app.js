@@ -14,7 +14,7 @@ function build(){if($('#template').value!=='custom')$('#builderMessage').value=t
 ['greeting','customer','businessName','offer','template'].forEach(id=>$('#'+id).addEventListener('input',build));$('#template').addEventListener('change',build);build();
 $('#copyMessage').onclick=()=>copy($('#builderMessage').value,'Message');
 $('#useMessage').onclick=()=>{$('#message').value=$('#builderMessage').value;refreshWa();location.hash='tools';toast('Message added to link builder')};
-function campaign(){const base=esc($('#campaignUrl').value);if(!base){$('#campaignResult').value='';return}try{const u=new URL(base);[['utm_source',$('#utmSource').value],['utm_medium',$('#utmMedium').value],['utm_campaign',$('#utmCampaign').value]].forEach(([k,v])=>{if(esc(v))u.searchParams.set(k,esc(v))});$('#campaignResult').value=u.toString()}catch{$('#campaignResult').value='Invalid URL'}}
+function campaign(){const base=esc($('#campaignUrl').value);if(!base){$('#campaignResult').value='';return}try{const u=new URL(base);if(!['http:','https:'].includes(u.protocol))throw new Error('Unsupported protocol');[['utm_source',$('#utmSource').value],['utm_medium',$('#utmMedium').value],['utm_campaign',$('#utmCampaign').value]].forEach(([k,v])=>{if(esc(v))u.searchParams.set(k,esc(v))});$('#campaignResult').value=u.toString()}catch{$('#campaignResult').value='Invalid URL'}}
 ['campaignUrl','utmSource','utmMedium','utmCampaign'].forEach(id=>$('#'+id).addEventListener('input',campaign));
 $('#copyCampaign').onclick=()=>copy($('#campaignResult').value,'Campaign URL');$('#clearCampaign').onclick=()=>{['campaignUrl','utmCampaign','campaignResult'].forEach(id=>$('#'+id).value='');campaign()};
 let qrCanvas=null;
@@ -39,7 +39,7 @@ function qr(){
 $('#qrInput').addEventListener('input',qr);
 $('#downloadQr').onclick=()=>{if(!qrCanvas)return;const a=document.createElement('a');a.href=qrCanvas.toDataURL('image/png');a.download='whatsapp-qr.png';a.click()};
 $('#copyQrSource').onclick=()=>copy($('#qrInput').value,'Content');
-$('#checkLink').onclick=()=>{const v=esc($('#checkInput').value);const e=$('#checkResult');try{const u=new URL(v);const ok=(u.hostname==='wa.me'||u.hostname==='api.whatsapp.com'||u.hostname.endsWith('.whatsapp.com'));e.className='status '+(ok?'good':'bad');e.textContent=ok?'Valid WhatsApp-compatible URL. Phone/message parameters can be inspected in the address.':'This does not look like a WhatsApp URL.'}catch{e.className='status bad';e.textContent='Invalid URL.'}};
+$('#checkLink').onclick=()=>{const v=esc($('#checkInput').value);const e=$('#checkResult');try{const u=new URL(v);const ok=(['wa.me','api.whatsapp.com','web.whatsapp.com'].includes(u.hostname));e.className='status '+(ok?'good':'bad');e.textContent=ok?'Valid WhatsApp-compatible URL. Phone/message parameters can be inspected in the address.':'This does not look like a WhatsApp URL.'}catch{e.className='status bad';e.textContent='Invalid URL.'}};
 $('#sharePage').onclick=async()=>{const data={title:'WhatsApp Toolkit',text:'Build WhatsApp links and marketing URLs with this free browser-based toolkit.',url:location.href};if(navigator.share){try{await navigator.share(data)}catch{}}else copy(location.href,'Toolkit URL')};
 refreshWa();
 })();
